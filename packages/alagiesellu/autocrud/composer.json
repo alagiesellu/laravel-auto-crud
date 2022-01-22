@@ -1,0 +1,17 @@
+{
+    "name": "alagiesellu/autocrud",
+    "description": "Auto CRUD functionality to models.",
+    "autoload": {
+        "psr-4": {
+            "Alagiesellu\\Autocrud\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alagie Sellu",
+            "email": "alagiesellu@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
