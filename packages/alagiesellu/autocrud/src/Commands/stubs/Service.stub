@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Autocrud\Services;
+
+use Alagiesellu\Autocrud\CRUDService;
+use App\Autocrud\Repositories\{{ model }}Repository;
+use App\Autocrud\Resources\{{ model }}Resource;
+
+class {{ model }}Service extends CRUDService
+{
+    public function __construct({{ model }}Repository $repository)
+    {
+        parent::__construct(
+            $repository,
+            {{ model }}Resource::class,
+            [
+                'all' => [],
+                'paginate' => [],
+                'show' => [],
+            ] // list of relationships to load on each call.
+        );
+    }
+}

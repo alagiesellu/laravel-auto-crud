@@ -16,10 +16,6 @@ use Illuminate\Validation\ValidationException;
 abstract class CrudController extends Controller
 {
     private CRUDRequest $formRequest;
-
-    /**
-     * @var CRUDService
-     */
     private CRUDService $service;
 
     public function __construct(CRUDService $service, CRUDRequest $formRequest)
@@ -61,7 +57,7 @@ abstract class CrudController extends Controller
     }
 
     /**
-     * @throws ValidationException
+     * @throws Exception
      */
     public function store(Request $request): JsonResource
     {
@@ -71,7 +67,7 @@ abstract class CrudController extends Controller
     }
 
     /**
-     * @throws ValidationException
+     * @throws Exception
      */
     public function update(Request $request, int $id): JsonResource
     {
@@ -83,11 +79,8 @@ abstract class CrudController extends Controller
     /**
      * @throws ValidationException
      */
-    protected function validateRequest(Request $request, $id = ''): array
+    protected function validateRequest(Request $request, $id = null): array
     {
-        if (is_null($this->formRequest))
-            throw new \InvalidArgumentException('Form Request not assigned. Null provided.');
-
         $validator = Validator::make(
             $request->all(),
             $this->formRequest->rules($id)

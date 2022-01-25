@@ -2,11 +2,29 @@
 
 namespace App\Console;
 
+use Alagiesellu\Autocrud\Commands\GenerateAutoCRUDController;
+use Alagiesellu\Autocrud\Commands\GenerateAutoCRUDFiles;
+use Alagiesellu\Autocrud\Commands\GenerateAutoCRUDRepository;
+use Alagiesellu\Autocrud\Commands\GenerateAutoCRUDResource;
+use Alagiesellu\Autocrud\Commands\GenerateAutoCRUDService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    /**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */
+    protected $commands = [
+        GenerateAutoCRUDFiles::class,
+        GenerateAutoCRUDController::class,
+        GenerateAutoCRUDRepository::class,
+        GenerateAutoCRUDResource::class,
+        GenerateAutoCRUDService::class,
+    ];
+
     /**
      * Define the application's command schedule.
      *

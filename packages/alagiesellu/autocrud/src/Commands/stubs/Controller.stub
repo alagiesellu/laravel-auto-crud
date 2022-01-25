@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Autocrud\Controllers;
+
+use Alagiesellu\Autocrud\Controllers\CrudController;
+use App\Autocrud\Requests\{{ model }}Request;
+use App\Autocrud\Services\{{ model }}Service;
+
+class {{ model }}Controller extends CrudController
+{
+    public function __construct({{ model }}Service $service)
+    {
+        parent::__construct($service, new {{ model }}Request());
+    }
+}

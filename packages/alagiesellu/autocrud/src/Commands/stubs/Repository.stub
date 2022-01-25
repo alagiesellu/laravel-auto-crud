@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Autocrud\Repositories;
+
+use Alagiesellu\Autocrud\CRUDRepository;
+use App\Models\{{ model }};
+
+class {{ model }}Repository extends CRUDRepository
+{
+    public function __construct()
+    {
+        parent::__construct({{ model }}::class, []);
+    }
+}

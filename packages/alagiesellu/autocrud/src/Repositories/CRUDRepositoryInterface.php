@@ -2,7 +2,7 @@
 
 namespace Alagiesellu\Autocrud\Repositories;
 
-interface RepositoryInterface
+interface CRUDRepositoryInterface
 {
     public function all();
 

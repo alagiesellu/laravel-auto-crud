@@ -8,21 +8,28 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-abstract class CRUDRepository implements RepositoryInterface
+abstract class CRUDRepository implements CRUDRepositoryInterface
 {
-    private $builder, $filter_columns, $order_by_column;
+    private mixed $order_by_column;
+    private array $filter_columns;
+    private mixed $builder;
 
     public function __construct($builder, array $filter_columns = [], string $order_by_column = null)
     {
         $this->builder = resolve($builder);
         $this->filter_columns = $filter_columns;
 
-        $this->order_by_column =
-            is_null($order_by_column) || ! $this->isOrderByColumnInModel($order_by_column)
-                ?
-                config('data.query.order_by')
-                :
-                $order_by_column;
+        $this->order_by_column = $this->loadOrderByColumn($order_by_column);
+
+    }
+
+    private function loadOrderByColumn(string $order_by_column = null)
+    {
+        return is_null($order_by_column) || ! $this->isOrderByColumnInModel($order_by_column)
+            ?
+            config('data.query.order_by')
+            :
+            $order_by_column;
     }
 
     public function getFilterColumns(): array
@@ -35,7 +42,7 @@ abstract class CRUDRepository implements RepositoryInterface
         return $this->builder;
     }
 
-    public function all(array $first_query = null)
+    public function all(array $first_query = null): \Illuminate\Database\Eloquent\Collection|array
     {
         return
             $this->buildQuery($first_query)
@@ -98,7 +105,6 @@ abstract class CRUDRepository implements RepositoryInterface
         return $this->getBuilder()->where($column, $value)->firstOrFail();
     }
 
-    // Eager load database relationships
     public  function with($relations): Builder
     {
         $this->builder = $this->builder->with($relations);
@@ -106,7 +112,7 @@ abstract class CRUDRepository implements RepositoryInterface
         return $this->builder;
     }
 
-    protected function addQuery(object &$query, string $column, $or = true)
+    private function addQuery(object &$query, string $column, $or = true)
     {
         if (str_ends_with('_id', $column))
         {

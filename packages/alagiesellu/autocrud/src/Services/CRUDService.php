@@ -8,39 +8,31 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-abstract class CRUDService implements ServiceInterface
+abstract class CRUDService implements CRUDServiceInterface
 {
-    /**
-     * @var CRUDRepository
-     */
-    private $repository;
 
-    /**
-     * @var JsonResource
-     */
-    protected $jsonResource;
+    private CRUDRepository $repository;
 
-    /**
-     * @var array
-     */
-    private $relations;
+    private string|JsonResource $jsonResource;
+
+    private array $relationships;
 
 
     /**
      * FormService constructor.
      * @param CRUDRepository $repository
-     * @param string $jsonResource
-     * @param array $relations
+     * @param string|JsonResource $jsonResource
+     * @param array $relationships
      */
     public function __construct(
-        CRUDRepository $repository,
-        string         $jsonResource = JsonResource::class,
-        array          $relations = []
+        CRUDRepository      $repository,
+        string|JsonResource $jsonResource = new JsonResource::class,
+        array               $relationships = []
     )
     {
         $this->repository = $repository;
         $this->jsonResource = $jsonResource;
-        $this->relations = $relations;
+        $this->relationships = $relationships;
     }
 
     public function getRepository(): CRUDRepository
@@ -48,7 +40,7 @@ abstract class CRUDService implements ServiceInterface
         return $this->repository;
     }
 
-    public function getJsonResource()
+    public function getJsonResource(): string|JsonResource
     {
         return $this->jsonResource;
     }
@@ -130,11 +122,11 @@ abstract class CRUDService implements ServiceInterface
      */
     public function with(string $function): Builder
     {
-        $relations = [];
+        $relationships = [];
 
-        if (array_key_exists($function, $this->relations))
-            $relations = $this->relations[$function];
+        if (array_key_exists($function, $this->relationships))
+            $relationships = $this->relationships[$function];
 
-        return $this->getRepository()->with($relations);
+        return $this->getRepository()->with($relationships);
     }
 }

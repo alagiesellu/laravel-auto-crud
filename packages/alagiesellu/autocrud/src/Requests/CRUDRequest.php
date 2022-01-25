@@ -32,7 +32,7 @@ class CRUDRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    public function rules($id = null): array
     {
         return $this->rules;
     }

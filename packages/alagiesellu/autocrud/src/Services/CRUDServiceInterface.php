@@ -2,7 +2,7 @@
 
 namespace Alagiesellu\Autocrud\Services;
 
-interface ServiceInterface
+interface CRUDServiceInterface
 {
     public function getRepository();
 
