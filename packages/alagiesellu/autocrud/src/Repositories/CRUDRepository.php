@@ -2,6 +2,7 @@
 
 namespace Alagiesellu\Autocrud\Repositories;
 
+use Alagiesellu\Autocrud\Models\CRUDModel;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,6 +69,8 @@ abstract class CRUDRepository implements CRUDRepositoryInterface
 
             $builder_data = $this->getById($id);
 
+            $this->reasonsNotToUpdateCheck($builder_data->reasonsNotToUpdate());
+
             $builder_data->update($data);
 
             return $builder_data;
@@ -80,19 +83,16 @@ abstract class CRUDRepository implements CRUDRepositoryInterface
 
             $builder_data = $this->getById($id);
 
-            if ($builder_data->canDelete())
-            {
-                $this->deleteRelations($builder_data->getRelations());
+            $this->reasonsNotToDeleteCheck($builder_data->reasonsNotToDelete());
 
-                return $builder_data->delete();
-            }
+            $this->deleteRelations($builder_data->getRelations());
 
-            return false;
+            return $builder_data->delete();
 
         }); // End transaction
     }
 
-    public function getById($id, $with = null)
+    public function getById($id, $with = null): CRUDModel
     {
         if (!is_null($with))
             $this->with($with);
@@ -100,7 +100,7 @@ abstract class CRUDRepository implements CRUDRepositoryInterface
         return $this->getBuilder()->findOrFail($id);
     }
 
-    public function findBy($column, $value)
+    public function findBy($column, $value): CRUDModel
     {
         return $this->getBuilder()->where($column, $value)->firstOrFail();
     }
@@ -246,11 +246,33 @@ abstract class CRUDRepository implements CRUDRepositoryInterface
     {
         foreach ($relations as $relation)
         {
-            if (!$relation->canDelete())
-                throw new Exception('Relationship deletion fail.');
-
+            $this->reasonsNotToDeleteCheck($relation->reasonsNotToDelete());
             $relation->delete();
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function reasonsNotToDeleteCheck(array $reasons)
+    {
+        if (count($reasons) !== 0)
+            throw new Exception(
+                'Cannot Delete Record Because: ' . implode(',', $reasons)
+            );
+
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function reasonsNotToUpdateCheck(array $reasons)
+    {
+        if (count($reasons) !== 0)
+            throw new Exception(
+                'Cannot Update Record Because: ' . implode(',', $reasons)
+            );
+
     }
 
     public function where(array $conditions, string $orderColumn = null, string $orderDirection = null)

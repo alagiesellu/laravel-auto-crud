@@ -107,7 +107,7 @@ abstract class CrudController extends Controller
     /**
      * @throws Exception
      */
-    public function apiErrorResponse(string $message = 'Ooops!!! Something went wrong. Try again.'): JsonResponse
+    public function apiErrorResponse(string $message = 'Oops!!! Something went wrong. Try again.'): JsonResponse
     {
         throw new Exception($message);
     }
