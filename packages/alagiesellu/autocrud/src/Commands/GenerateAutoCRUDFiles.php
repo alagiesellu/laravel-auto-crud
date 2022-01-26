@@ -37,11 +37,22 @@ class GenerateAutoCRUDFiles extends Command
     {
         $model = $this->argument('model');
 
-        $this->call('autocrud:make-controller ' . $model);
-        $this->call('autocrud:make-repository ' . $model);
-        $this->call('autocrud:make-resource ' . $model);
-        $this->call('autocrud:make-service ' . $model);
+        $this->call(GenerateAutoCRUDController::class, [
+            'model' => $model,
+        ]);
 
-        $this->info('Autocrud make successfully!');
+        $this->call(GenerateAutoCRUDService::class, [
+            'model' => $model,
+        ]);
+
+        $this->call(GenerateAutoCRUDRepository::class, [
+            'model' => $model,
+        ]);
+
+        $this->call(GenerateAutoCRUDResource::class, [
+            'model' => $model,
+        ]);
+
+        $this->info("Autocrud make successfully for {$model}.");
     }
 }

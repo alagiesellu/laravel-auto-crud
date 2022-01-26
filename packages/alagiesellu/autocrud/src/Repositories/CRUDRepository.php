@@ -28,7 +28,7 @@ abstract class CRUDRepository implements CRUDRepositoryInterface
     {
         return is_null($order_by_column) || ! $this->isOrderByColumnInModel($order_by_column)
             ?
-            config('data.query.order_by')
+            config('autocrud.query.order_by')
             :
             $order_by_column;
     }
@@ -173,7 +173,7 @@ abstract class CRUDRepository implements CRUDRepositoryInterface
     {
         $paginate = request()->query('paginate');
 
-        $config_paginate = config('data.query.paginate');
+        $config_paginate = config('autocrud.query.paginate');
 
         return
             is_numeric($paginate) && $paginate > 0 && $paginate <= $config_paginate * 4
@@ -227,7 +227,7 @@ abstract class CRUDRepository implements CRUDRepositoryInterface
                 ?
                 $request_order_by
                 :
-                config('data.query.order');
+                config('autocrud.query.order');
     }
     private function buildOrderByQuery(): Builder
     {

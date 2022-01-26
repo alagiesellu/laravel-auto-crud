@@ -10,7 +10,7 @@ class CRUDRequest extends FormRequest
     private bool $authorize;
     private string $idKey;
 
-    public function __construct(array $rules = [], bool $authorize = true, string $idKey = '{id}')
+    public function __construct(array $rules, bool $authorize = true, string $idKey = '{id}')
     {
         $this->rules = $rules;
         $this->authorize = $authorize;

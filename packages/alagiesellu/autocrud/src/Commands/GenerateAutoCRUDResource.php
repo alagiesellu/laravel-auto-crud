@@ -3,6 +3,7 @@
 namespace Alagiesellu\Autocrud\Commands;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputArgument;
 
 class GenerateAutoCRUDResource extends GeneratorCommand
 {
@@ -33,5 +34,13 @@ class GenerateAutoCRUDResource extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace): string
     {
         return $rootNamespace . 'app\Autocrud\Resources';
+    }
+
+    protected function getArguments(): array
+    {
+        return [
+//            ['name', InputArgument::REQUIRED, 'The name and root of the file.'],
+            ['model', InputArgument::REQUIRED, 'The name and root of the model class targeted.'],
+        ];
     }
 }
