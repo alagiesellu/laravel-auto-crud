@@ -20,6 +20,7 @@ class GenerateAutoCRUDService extends GeneratorCommand
      * @var string
      */
     protected $description = 'Create auto CRUD service.';
+    protected $type = 'Service';
 
 
     protected function getStub(): string

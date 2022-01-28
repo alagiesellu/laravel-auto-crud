@@ -20,6 +20,7 @@ class GenerateAutoCRUDRepository extends GeneratorCommand
      * @var string
      */
     protected $description = 'Create auto CRUD repository.';
+    protected $type = 'Repository';
 
 
     protected function getStub(): string

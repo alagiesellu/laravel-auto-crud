@@ -20,6 +20,7 @@ class GenerateAutoCRUDResource extends GeneratorCommand
      * @var string
      */
     protected $description = 'Create auto CRUD resource.';
+    protected $type = 'Resource';
 
 
     protected function getStub(): string

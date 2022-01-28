@@ -20,6 +20,7 @@ class GenerateAutoCRUDController extends GeneratorCommand
      * @var string
      */
     protected $description = 'Create auto CRUD controller.';
+    protected $type = 'Controller';
 
 
     protected function getStub(): string

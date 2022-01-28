@@ -38,18 +38,22 @@ class GenerateAutoCRUDFiles extends Command
         $model = $this->argument('model');
 
         $this->call(GenerateAutoCRUDController::class, [
+            'name' => "{$model}Controller",
             'model' => $model,
         ]);
 
         $this->call(GenerateAutoCRUDService::class, [
+            'name' => "{$model}Service",
             'model' => $model,
         ]);
 
         $this->call(GenerateAutoCRUDRepository::class, [
+            'name' => "{$model}Repository",
             'model' => $model,
         ]);
 
         $this->call(GenerateAutoCRUDResource::class, [
+            'name' => "{$model}Resource",
             'model' => $model,
         ]);
 

@@ -2,8 +2,8 @@
 
 namespace Alagiesellu\Autocrud\Controllers;
 
+use Alagiesellu\Autocrud\Repositories\CRUDRepository;
 use Alagiesellu\Autocrud\Requests\CRUDRequest;
-use Alagiesellu\Autocrud\Services\CRUDService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,11 +16,11 @@ use Illuminate\Validation\ValidationException;
 abstract class CrudController extends Controller
 {
     private CRUDRequest $formRequest;
-    private CRUDService $service;
+    private CRUDRepository $repository;
 
-    public function __construct(CRUDService $service, CRUDRequest $formRequest)
+    public function __construct(CRUDRepository $repository, CRUDRequest $formRequest)
     {
-        $this->service = $service;
+        $this->repository = $repository;
         $this->formRequest = $formRequest;
     }
 
@@ -29,7 +29,7 @@ abstract class CrudController extends Controller
      */
     public function all(): AnonymousResourceCollection
     {
-        return $this->getService()->all();
+        return $this->getRepository()->all();
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class CrudController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return $this->getService()->paginate();
+        return $this->getRepository()->paginate();
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class CrudController extends Controller
      */
     public function show(int $id): JsonResource
     {
-        return $this->getService()->show($id);
+        return $this->getRepository()->show($id);
     }
 
     /**
@@ -53,7 +53,7 @@ abstract class CrudController extends Controller
      */
     public function destroy(int $id): bool
     {
-        return $this->getService()->delete($id);
+        return $this->getRepository()->delete($id);
     }
 
     /**
@@ -63,7 +63,7 @@ abstract class CrudController extends Controller
     {
         $validatedRequest = $this->validateRequest($request);
 
-        return $this->getService()->store($validatedRequest);
+        return $this->getRepository()->store($validatedRequest);
     }
 
     /**
@@ -73,7 +73,7 @@ abstract class CrudController extends Controller
     {
         $validatedRequest = $this->validateRequest($request, $id);
 
-        return $this->getService()->update($validatedRequest, $id);
+        return $this->getRepository()->update($validatedRequest, $id);
     }
 
     /**
@@ -92,16 +92,9 @@ abstract class CrudController extends Controller
         return $validator->validated();
     }
 
-    public function getService(): CRUDService
+    public function getRepository(): CRUDRepository
     {
-        return $this->service;
-    }
-
-    public function apiSuccessResponse(string $message = 'Successful'): JsonResponse
-    {
-        return response()->json([
-            'success' => $message
-        ]);
+        return $this->repository;
     }
 
     /**
