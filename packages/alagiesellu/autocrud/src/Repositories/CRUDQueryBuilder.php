@@ -2,11 +2,11 @@
 
 namespace Alagiesellu\Autocrud\Repositories;
 
-use Alagiesellu\Autocrud\Models\CRUDModel;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Alagiesellu\Autocrud\Models\CRUDModel;
+use Illuminate\Database\Eloquent\Builder;
 use JetBrains\PhpStorm\Pure;
+use Exception;
 
 abstract class CRUDQueryBuilder
 {
@@ -24,9 +24,11 @@ abstract class CRUDQueryBuilder
 
     }
 
-    #[Pure] public function getJsonResource(): JsonResource
+    public function getJsonResource(): object
     {
-        return $this->builder->getJsonResource();
+        return resolve(
+            $this->builder->getJsonResource()
+        );
     }
 
     private function loadOrderByColumn(string $order_by_column = null)

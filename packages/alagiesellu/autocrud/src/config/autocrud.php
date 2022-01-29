@@ -12,4 +12,8 @@ return [
         'order_by' => 'id',
         'order' => 'desc',
     ],
+
+    'request' => [
+      'key' => '{id}',
+    ],
 ];

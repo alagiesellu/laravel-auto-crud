@@ -14,7 +14,5 @@ interface CRUDRepositoryInterface
 
     public function delete($id);
 
-    public function show($id);
-
-    public function showBy(string $column, $value);
+    public function show($value, string $column);
 }

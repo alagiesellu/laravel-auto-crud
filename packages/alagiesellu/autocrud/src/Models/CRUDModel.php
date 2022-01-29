@@ -2,8 +2,8 @@
 
 namespace Alagiesellu\Autocrud\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class CRUDModel extends Model implements CRUDModelInterface
 {
@@ -13,11 +13,13 @@ abstract class CRUDModel extends Model implements CRUDModelInterface
 
     protected string $orderByColumn;
 
-    protected JsonResource $jsonResource;
+    protected string $jsonResource;
 
-    public function getJsonResource(): JsonResource
+    public function getJsonResource(): string
     {
-        return $this->jsonResource;
+        return
+            $this->jsonResource ?? JsonResource::class
+            ;
     }
 
     public function getSearchByColumns(): array

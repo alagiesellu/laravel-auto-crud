@@ -2,16 +2,16 @@
 
 namespace Alagiesellu\Autocrud\Controllers;
 
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Alagiesellu\Autocrud\Repositories\CRUDRepository;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Alagiesellu\Autocrud\Requests\CRUDRequest;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Exception;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 abstract class CrudController extends Controller
 {
@@ -71,7 +71,7 @@ abstract class CrudController extends Controller
      */
     public function update(Request $request, int $id): JsonResource
     {
-        $validatedRequest = $this->validateRequest($request, $id);
+        $validatedRequest = $this->validateRequest($request);
 
         return $this->getRepository()->update($validatedRequest, $id);
     }
@@ -79,11 +79,11 @@ abstract class CrudController extends Controller
     /**
      * @throws ValidationException
      */
-    protected function validateRequest(Request $request, $id = null): array
+    protected function validateRequest(Request $request): array
     {
         $validator = Validator::make(
             $request->all(),
-            $this->formRequest->rules($id)
+            $this->formRequest->rules()
         );
 
         if ($validator->fails())

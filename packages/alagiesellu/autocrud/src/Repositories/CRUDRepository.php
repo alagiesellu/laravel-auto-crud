@@ -2,9 +2,9 @@
 
 namespace Alagiesellu\Autocrud\Repositories;
 
-use Alagiesellu\Autocrud\Models\CRUDModel;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Alagiesellu\Autocrud\Models\CRUDModel;
 use Illuminate\Support\Facades\DB;
 
 abstract class CRUDRepository extends CRUDQueryBuilder implements CRUDRepositoryInterface
@@ -81,20 +81,17 @@ abstract class CRUDRepository extends CRUDQueryBuilder implements CRUDRepository
         }); // End transaction
     }
 
-    public function show($id): JsonResource
+    public function show($value, string $column = null): JsonResource
     {
         $this->addLoadWith(__FUNCTION__);
 
         return new ($this->getJsonResource())(
-            $this->getById($id)
-        );
-    }
 
-    public function showBy(string $column, $value): JsonResource
-    {
-        $this->addLoadWith('show');
-        return new ($this->getJsonResource())(
-            $this->getBy($column, $value)
+            is_null($column) ?
+                $this->getById($value)
+                :
+                $this->getBy($column, $value)
+
         );
     }
 }
